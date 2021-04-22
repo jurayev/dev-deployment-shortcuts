@@ -3,14 +3,18 @@
 Collection of useful development and deployment commands.
 
 # Generate random password 
+```
 openssl rand -hex 32
 -> 40baac9b5b14bd89f44efecfa283ac4ef37f5fe168cb7270674sb1d0727896e5
+```
 
 ## Virtual env
+```
 python3 -m venv tutorial-env
 source tutorial-env/bin/activate
-
+```
 # Docker
+```
 docker-compose up
 docker build -t serverless-test -f Dockerfile.build . 
 docker network inspect build 
@@ -21,24 +25,29 @@ docker-compose exec <service> bash
 docker-compose logs -f <service>
 docker run --rm --env LOCALSTACK_HOSTNAME=172.17.0.2 -p 9001:8080 <container_id>
 docker-compose up --scale shortener=3 --scale redis=3
-
+```
 # Serverless - Commands and references
+```
 npm install -g serverless
 npm install serverless-localstack --dev
 serverless deploy --verbose --stage local
-
+```
 ## invoke lambda function
+```
 serverless invoke --function process --log --stage local --region eu-central-1 --path events/s3-put-event.json
 serverless invoke --function process --log --stage local --payload fileb://lambda_upload_input.json response.json
 serverless invoke --function process --stage local --region eu-central-1 --path events/s3-event.json --type Event 
+```
 ## logs
+```
 serverless logs --stage local --tail -i 10 -f processing
-
+```
 # AWS
 ## S3
 ## deployment bucket
+```
 awslocal s3api create-bucket --bucket transform-local-deploy --region eu-central-1
-
+```
 ## list files s3:  
 awslocal s3 ls s3://xml --recursive
 ## copy files s3:  
@@ -61,15 +70,16 @@ aws --endpoint-url=$AWS_ENDPOINT s3api put-bucket-notification-configuration --b
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.DataTypes.html
 https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_AttributeValue.html
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Python.05.html
-
+```
 awslocal dynamodb create-table --table-name Rules --attribute-definitions AttributeName=RuleId,AttributeType=N --key-schema AttributeName=RuleId,KeyType=HASH --provisioned-throughput ReadCapacityUnits=10,WriteCapacityUnits=5
 awslocal dynamodb delete-table --table-name Rules
-
+```
 ## check table
+```
 awslocal dynamodb describe-table --table-name rulesTable
 awslocal dynamodb list-tables
 awslocal dynamodb get-item --consistent-read --table-name rulesTable --key '{"RuleId": {"N": "1"}}'
-
+```
 ## API GATEWAY
 https://www.serverless.com/framework/docs/providers/aws/events/apigateway/#simple-http-endpoint
 https://stackoverflow.com/questions/50925083/parse-multipart-request-string-in-python
@@ -78,11 +88,13 @@ awslocal apigateway get-rest-apis
 ## list all endpoints
 awslocal apigateway get-resources --rest-api-id 575os36mtj
 ## hit endpoint
+```
 curl -X POST -H "Content-Type: application/xml" --data-binary "@src/data/test.xml" http://localhost:4566/restapis/<api id>/local/_user_request_/upload?file=test.xml --data '{"file": "test.xml"}'
 curl -X POST "http://localhost:4566/restapis/ooqtshw5rg/local/_user_request_/upload?file=data/data.xml&bucket=xml-data"
 curl -F "name=data.xml" -F "file=@src/data/data.xml" http://localhost:4566/restapis/ku4nexn8h4/local/_user_request_/upload
-
+```
 ## upload file using presigned url
+```
 curl -F "acl=public-read" \
       -F "file=@src/test/test.xml" \
       -F "Content-Type=application/xml" \
@@ -92,7 +104,7 @@ curl -F "acl=public-read" \
       -F "x-amz-date=20210402T220531Z" \
       -F "x-amz-signature=fba9f35caee211f24bcb7c9cfb03ff670de9e10f271ae3e58422746195578e6c" \
       http://localhost:4566/xml-data
-
+```
 # Lambda layers
 https://medium.com/@dorian599/serverless-aws-lambda-layers-and-python-dependencies-92741138bf31
 https://github.com/dorian599/serverless-medium
@@ -101,6 +113,7 @@ https://github.com/dorian599/serverless-medium
 Run Tests before deploy
 
 ### Setup and Config
+```
 heroku create
 git push heroku main
 heroku ps:scale web=1
@@ -111,8 +124,10 @@ heroku addons | grep heroku-redis
 heroku addons:info redis
 heroku redis:info
 heroku config | grep REDIS
-
+```
 ### Redis
+```
 heroku redis:timeout redis-tetrahedral-02340 --seconds 60
 heroku redis:maxmemory redis-tetrahedral-02340 --policy allkeys-lru
 heroku redis:cli --confirm mini-url-xyz
+```
