@@ -10,8 +10,8 @@ openssl rand -hex 32
 
 ## Virtual env
 ```
-python3 -m venv tutorial-env
-source tutorial-env/bin/activate
+python3 -m venv .env
+source .env/bin/activate
 ```
 # Docker
 ```
