@@ -46,22 +46,24 @@ serverless logs --stage local --tail -i 10 -f processing
 ## S3
 ## deployment bucket
 ```
-awslocal s3api create-bucket --bucket transform-local-deploy --region eu-central-1
+aws s3api create-bucket --bucket transform-local-deploy --region eu-central-1
 ```
 ## list files s3:  
-awslocal s3 ls s3://xml --recursive
+aws s3 ls s3://xml --recursive
 ## copy files s3:  
-awslocal s3 cp ./test/files s3://xml//xml-files/ --recursive
+aws s3 cp ./test/files s3://xml//xml-files/ --recursive
+## remove files s3:
+aws s3 rm s3://path/to/object --recursive
 ## create new folder: 
-awslocal s3api put-object --bucket xml --key xml-files
+aws s3api put-object --bucket xml --key xml-files
 ## create bucket:  
-awslocal s3 mb s3://xml
+aws s3 mb s3://xml
 ## list buckets: 
-awslocal s3api list-buckets
+aws s3api list-buckets
 ## list objects:
-awslocal s3api list-objects --bucket profile-pictures
+aws s3api list-objects --bucket profile-pictures
 ## delete bucket
-awslocal s3api delete-bucket --bucket name
+aws s3api delete-bucket --bucket name
 ## s3 config notification
 aws --endpoint-url=$AWS_ENDPOINT s3api put-bucket-notification-configuration --bucket xml-data --notification-configuration '{"LambdaFunctionConfigurations":[{"Events":["s3:ObjectCreated:*"],"LambdaFunctionArn":"arn:aws:lambda:eu-central-1:000000000000:function:data-transform-local-processing"}]}'
 
